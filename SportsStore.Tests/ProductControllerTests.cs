@@ -30,7 +30,7 @@ namespace SportsStore.Tests
 
             var controller = new ProductController(repo) {PageSize = 3};
 
-            var result = (ProductListViewModel) controller.List(2).Model;
+            var result = (ProductListViewModel) controller.List(null, 2).Model;
             var products = result.Products.ToArray();
 
             Assert.That(products.Length, Is.EqualTo(2));
@@ -64,6 +64,28 @@ namespace SportsStore.Tests
                               @"<a class=""btn btn-default"" href=""Page3"">3</a>";
             
             Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void Can_Filter_Products()
+        {
+            var repo = Substitute.For<IProductRepository>();
+            repo.Products.Returns(new[]
+            {
+                new Product {ProductId = 1, Name = "P1", Category = "Cat1"},
+                new Product {ProductId = 2, Name = "P2", Category = "Cat2"},
+                new Product {ProductId = 3, Name = "P3", Category = "Cat1"},
+                new Product {ProductId = 4, Name = "P4", Category = "Cat2"},
+                new Product {ProductId = 5, Name = "P5", Category = "Cat3"},
+            });
+
+            var controller = new ProductController(repo) {PageSize = 3};
+
+            var result = ((ProductListViewModel) controller.List("Cat2", 1).Model).Products.ToArray();
+
+            Assert.That(result.Length, Is.EqualTo(2));
+            Assert.That(result[0].Name, Is.EqualTo("P2"));
+            Assert.That(result[1].Name, Is.EqualTo("P4"));
         }
     }
 }

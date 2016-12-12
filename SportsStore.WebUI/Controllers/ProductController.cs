@@ -17,11 +17,12 @@ namespace SportsStore.WebUI.Controllers
             _repository = repository;
         }
 
-        public ViewResult List(int page = 1)
+        public ViewResult List(string category, int page = 1)
         {
             var model = new ProductListViewModel
             {
                 Products = _repository.Products
+                .Where(x=> category == null || x.Category == category)
                 .OrderBy(x => x.ProductId)
                 .Skip((page - 1)*PageSize)
                 .Take(PageSize),
