@@ -1,0 +1,69 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using NSubstitute;
+using NUnit.Framework;
+using SportsStore.Domain.Entities;
+using SportsStore.Domain.Interfaces;
+using SportsStore.WebUI.Controllers;
+using SportsStore.WebUI.HtmlHelpers;
+using SportsStore.WebUI.Models;
+
+namespace SportsStore.Tests
+{
+    [TestFixture]
+    public class ProductControllerTests
+    {
+        [Test]
+        public void Can_Paginate()
+        {
+            var repo = Substitute.For<IProductRepository>();
+            repo.Products.Returns(new[]
+            {
+                new Product {ProductId = 1, Name = "P1"},
+                new Product {ProductId = 2, Name = "P2"},
+                new Product {ProductId = 3, Name = "P3"},
+                new Product {ProductId = 4, Name = "P4"},
+                new Product {ProductId = 5, Name = "P5"},
+            });
+
+            var controller = new ProductController(repo) {PageSize = 3};
+
+            var result = (ProductListViewModel) controller.List(2).Model;
+            var products = result.Products.ToArray();
+
+            Assert.That(products.Length, Is.EqualTo(2));
+            Assert.That(products[0].Name, Is.EqualTo("P4"));
+            Assert.That(products[1].Name, Is.EqualTo("P5"));
+
+            var pagingInfo = result.PagingInfo;
+            Assert.That(pagingInfo.CurrentPage, Is.EqualTo(2));
+            Assert.That(pagingInfo.ItemsPerPage, Is.EqualTo(3));
+            Assert.That(pagingInfo.TotalPages, Is.EqualTo(2));
+            Assert.That(pagingInfo.TotalItems, Is.EqualTo(5));
+        }
+
+        [Test]
+        public void Can_Generate_Page_Links()
+        {
+            HtmlHelper helper = null;
+            var info = new PagingInfo
+            {
+                CurrentPage = 2,
+                TotalItems = 28,
+                ItemsPerPage = 10
+            };
+
+            Func<int, string> createPageUrl = i => "Page" + i;
+
+            var result = helper.PageLinks(info, createPageUrl).ToString();
+
+            var expected = @"<a class=""btn btn-default"" href=""Page1"">1</a>" +
+                              @"<a class=""btn btn-default btn-primary selected"" href=""Page2"">2</a>" +
+                              @"<a class=""btn btn-default"" href=""Page3"">3</a>";
+            
+            Assert.That(result, Is.EqualTo(expected));
+        }
+    }
+}
