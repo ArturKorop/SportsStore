@@ -87,5 +87,32 @@ namespace SportsStore.Tests
             Assert.That(result[0].Name, Is.EqualTo("P2"));
             Assert.That(result[1].Name, Is.EqualTo("P4"));
         }
+
+        [Test]
+        public void Generate_Category_Specific_Product_Count()
+        {
+            var repo = Substitute.For<IProductRepository>();
+            repo.Products.Returns(new[]
+            {
+                new Product {ProductId = 1, Name = "P1", Category = "Cat1"},
+                new Product {ProductId = 2, Name = "P2", Category = "Cat2"},
+                new Product {ProductId = 3, Name = "P3", Category = "Cat1"},
+                new Product {ProductId = 4, Name = "P4", Category = "Cat2"},
+                new Product {ProductId = 5, Name = "P5", Category = "Cat3"},
+            });
+
+            var controller = new ProductController(repo) { PageSize = 3 };
+
+            Func<string, int> getTotalItems = s =>
+            {
+                var result = ((ProductListViewModel) controller.List(s).Model).PagingInfo.TotalItems;
+
+                return result;
+            };
+
+            Assert.That(getTotalItems("Cat1"), Is.EqualTo(2));
+            Assert.That(getTotalItems("Cat2"), Is.EqualTo(2));
+            Assert.That(getTotalItems("Cat3"), Is.EqualTo(1));
+        }
     }
 }

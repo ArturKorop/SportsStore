@@ -32,5 +32,25 @@ namespace SportsStore.Tests
             Assert.That(result[1], Is.EqualTo("Oranges"));
             Assert.That(result[2], Is.EqualTo("Plums"));
         }
+
+        [Test]
+        public void Indicates_Selected_Category()
+        {
+            var repo = Substitute.For<IProductRepository>();
+            repo.Products.Returns(new[]
+            {
+                new Product {ProductId = 1, Name = "P1", Category = "Apples"},
+                new Product {ProductId = 2, Name = "P2", Category = "Apples"},
+                new Product {ProductId = 3, Name = "P3", Category = "Plums"},
+                new Product {ProductId = 4, Name = "P4", Category = "Oranges"},
+            });
+
+            var controller = new NavController(repo);
+            var categoryToSelect = "Apples";
+
+            string result = controller.Menu(categoryToSelect).ViewBag.SelectedCategory;
+
+            Assert.That(result, Is.EqualTo(categoryToSelect));
+        }
     }
 }
