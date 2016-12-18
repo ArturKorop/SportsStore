@@ -1,6 +1,5 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
-using Ninject.Infrastructure.Language;
 
 namespace SportsStore.WebUI
 {

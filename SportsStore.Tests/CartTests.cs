@@ -109,7 +109,7 @@ namespace SportsStore.Tests
             });
 
             var cart =new Cart();
-            var target = new CartController(repo);
+            var target = new CartController(repo, null);
 
             target.AddToCart(cart, 1, null);
 
@@ -127,7 +127,7 @@ namespace SportsStore.Tests
             });
 
             var cart = new Cart();
-            var target = new CartController(repo);
+            var target = new CartController(repo, null);
 
             var result = target.AddToCart(cart, 1, "myUrl");
 
@@ -139,7 +139,7 @@ namespace SportsStore.Tests
         public void Can_View_Cart_Contents()
         {
             var cart = new Cart();
-            var target = new CartController(null);
+            var target = new CartController(null, null);
 
             var result = (CartIndexViewModel)target.Index(cart, "myUrl").ViewData.Model;
 
@@ -147,5 +147,52 @@ namespace SportsStore.Tests
             Assert.That(result.ReturnUrl, Is.EqualTo("myUrl"));
         }
 
+        [Test]
+        public void Cannot_Checkout_Empty_Cart()
+        {
+            var processor = Substitute.For<IOrderProcessor>();
+            var cart = new Cart();
+            var details = new ShippingDetails();
+            var target = new CartController(null, processor);
+
+            var result = target.Checkout(cart, details);
+
+            processor.DidNotReceiveWithAnyArgs().ProcessOrder(Arg.Any<Cart>(), Arg.Any<ShippingDetails>());
+            Assert.That(result.ViewName, Is.EqualTo(""));
+            Assert.IsFalse(result.ViewData.ModelState.IsValid);
+        }
+
+        [Test]
+        public void Cannot_Checkout_Invalid_ShippingDetails()
+        {
+            var processor = Substitute.For<IOrderProcessor>();
+            var cart = new Cart();
+            cart.AddItem(new Product(), 1);
+
+            var target = new CartController(null, processor);
+            target.ModelState.AddModelError("error", "errorj");
+
+            var result = target.Checkout(cart, new ShippingDetails());
+
+            processor.DidNotReceiveWithAnyArgs().ProcessOrder(Arg.Any<Cart>(), Arg.Any<ShippingDetails>());
+            Assert.That(result.ViewName, Is.EqualTo(""));
+            Assert.IsFalse(result.ViewData.ModelState.IsValid);
+        }
+
+        [Test]
+        public void Can_Checkout_And_Submit_Order()
+        {
+            var processor = Substitute.For<IOrderProcessor>();
+            var cart = new Cart();
+            cart.AddItem(new Product(), 1);
+
+            var target = new CartController(null, processor);
+
+            var result = target.Checkout(cart, new ShippingDetails());
+
+            processor.ReceivedWithAnyArgs().ProcessOrder(Arg.Any<Cart>(), Arg.Any<ShippingDetails>());
+            Assert.That(result.ViewName, Is.EqualTo("Completed"));
+            Assert.IsTrue(result.ViewData.ModelState.IsValid);
+        }
     }
 }

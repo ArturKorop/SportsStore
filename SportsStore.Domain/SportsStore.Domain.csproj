@@ -81,7 +81,10 @@
     <Compile Include="Db\EfProductRepository.cs" />
     <Compile Include="Entities\Cart.cs" />
     <Compile Include="Entities\Product.cs" />
+    <Compile Include="Entities\ShippingDetails.cs" />
+    <Compile Include="Interfaces\IOrderProcessor.cs" />
     <Compile Include="Interfaces\IProductRepository.cs" />
+    <Compile Include="Processors\EmailOrderProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using Ninject;
 using SportsStore.Domain.Db;
 using SportsStore.Domain.Interfaces;
+using SportsStore.Domain.Processors;
 
 namespace SportsStore.WebUI.Infrastructure
 {
@@ -30,6 +31,10 @@ namespace SportsStore.WebUI.Infrastructure
         private void AddBindings()
         {
             _kernel.Bind<IProductRepository>().To<EfProductRepository>();
+
+            var emailSettings = new EmailSettings();
+
+            _kernel.Bind<IOrderProcessor>().To<EmailOrderProcessor>().WithConstructorArgument("settings", emailSettings);
         }
     }
 }
