@@ -156,6 +156,7 @@
     <Content Include="Views\Shared\ProductSummary.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\Edit.cshtml" />
+    <Content Include="Views\Acount\Login.cshtml" />
     <None Include="Views\Cart\Checkout.cshtml" />
     <Content Include="Views\Cart\Completed.cshtml" />
     <None Include="Views\Cart\Index.cshtml" />
@@ -176,6 +177,7 @@
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AcountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\NavController.cs" />
@@ -185,8 +187,11 @@
     </Compile>
     <Compile Include="HtmlHelpers\PagingHelpers.cs" />
     <Compile Include="Infrastructure\Binders\CartModelBinder.cs" />
+    <Compile Include="Infrastructure\FormsAuthProvider.cs" />
+    <Compile Include="Infrastructure\Interfaces\IAuthProvider.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\CartIndexViewModel.cs" />
+    <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\PagingInfo.cs" />
     <Compile Include="Models\ProductListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
