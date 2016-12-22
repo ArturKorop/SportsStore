@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportsStore.Tests", "Sports
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportsStore.WebUI", "SportsStore.WebUI\SportsStore.WebUI.csproj", "{2CE13509-7CF1-433C-B12C-10B2E43B1F2A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoutingExample", "RoutingExample\RoutingExample.csproj", "{69BAE8B1-F8FC-4233-BC59-8F910B0ABB18}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{2CE13509-7CF1-433C-B12C-10B2E43B1F2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CE13509-7CF1-433C-B12C-10B2E43B1F2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CE13509-7CF1-433C-B12C-10B2E43B1F2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69BAE8B1-F8FC-4233-BC59-8F910B0ABB18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69BAE8B1-F8FC-4233-BC59-8F910B0ABB18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69BAE8B1-F8FC-4233-BC59-8F910B0ABB18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69BAE8B1-F8FC-4233-BC59-8F910B0ABB18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
